@@ -1,2 +1,0 @@
-# seleccioncaracteristicas
-proyecto II python
