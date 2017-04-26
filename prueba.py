@@ -11,6 +11,7 @@ import pandas as pd
 import numpy as np
 # For preprocessing the data
 from sklearn.preprocessing import Imputer
+from sklearn.preprocessing import StandardScaler
 from sklearn import preprocessing
 # To split the dataset into train and test datasets
 from sklearn.cross_validation import train_test_split
@@ -138,14 +139,17 @@ for each in num_features:
     scaled_features[each] = [mean, std]
     adult_df_rev.loc[:, each] = (adult_df_rev[each] - mean)/std
             
-features = adult_df_rev.values[:,:27]
+features = adult_df_rev.values[:,0:27]
 target = adult_df_rev.values[:,27]
 features_train, features_test, target_train, target_test = train_test_split(features,
                                                                             target, test_size = 0.33, random_state = 10)
 
+x_scalar = StandardScaler()
+features_train = x_scalar.fit_transform(features_train)
+features_test = x_scalar.transform(features_test)
+
 clf = GaussianNB()
 clf.fit(features_train, target_train)
-
 target_pred = clf.predict(features_test)
 
 print(accuracy_score(target_test, target_pred, normalize = True))
