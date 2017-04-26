@@ -21,7 +21,6 @@ from sklearn.metrics import accuracy_score
 
 adult_df = pd.read_csv('prueba.csv',
                        header = None, delimiter=' *, *', engine='python')
-
 #agregar los nombres de las caracteristicas
 adult_df.columns = ['movieid','userid','rating',
                     'gender','age','occupation','zipcode',
@@ -34,7 +33,6 @@ adult_df.columns = ['movieid','userid','rating',
 
 adult_df_rev = adult_df
 
-
 for value in ['movieid','userid','rating',
               'gender','age','occupation','zipcode',
               'namewords','namepar','year','action',
@@ -45,7 +43,7 @@ for value in ['movieid','userid','rating',
               'scifi','thriller','war','western']:
     adult_df_rev[value].replace(['?'], [adult_df_rev.describe(include='all')[value][2]],
                                 inplace='True')
-    
+print(adult_df)
 #estadisticas basicas de cada caracteristica
 #print(adult_df_rev.describe(include= 'all'))
 
@@ -127,9 +125,9 @@ adult_df_rev = adult_df_rev.reindex_axis(['movieid','userid','rating',
               'fantasy','filmnoir','horror','musical',
               'mystery','romance',
               'scifi','thriller','war','western'], axis= 1)
-'''
-#print(adult_df_rev)
 
+#print(adult_df_rev)
+'''
 num_features = ['movieid_cat','userid_cat','rating_cat',
                 'gender_cat','age_cat','occupation_cat',
                 'zipcode_cat','namewords_cat','namepar_cat',
@@ -152,14 +150,10 @@ features = adult_df_rev.values[:,:27]
 target = adult_df_rev.values[:,27]
 features_train, features_test, target_train, target_test = train_test_split(features,
                                                                             target, test_size = 0.33, random_state = 10)
-x_scalar = StandardScaler()
-features_train = x_scalar.transform(features_train)
-target_test = x_scalar.transform(features_test)
-
-
 clf = GaussianNB()
 clf.fit(features_train, target_test)
 target_pred = clf.predict(features_test)
 
 print(target_pred)
 
+'''
