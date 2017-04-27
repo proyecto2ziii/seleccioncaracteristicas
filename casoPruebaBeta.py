@@ -8,6 +8,7 @@ from sklearn.cross_validation import cross_val_score
 
 #read in the data
 data = pd.read_csv('data_so.csv', header=None)
+print(data)
 X = data.iloc[:,0:18]
 y = data.iloc[:,19]
 
