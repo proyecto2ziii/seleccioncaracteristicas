@@ -70,7 +70,7 @@ for each in num_features:
     mean, std = adult_df_rev[each].mean(), adult_df_rev[each].std()
     scaled_features[each] = [mean, std]
     adult_df_rev.loc[:, each] = (adult_df_rev[each] - mean)/std
-
+print(adult_df_rev)
 features = adult_df_rev.values[:,:14]
 target = adult_df_rev.values[:,14]
 features_train, features_test, target_train, target_test = train_test_split(features,

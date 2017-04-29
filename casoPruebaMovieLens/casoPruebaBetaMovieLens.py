@@ -20,7 +20,7 @@ from sklearn.naive_bayes import GaussianNB
 # To calculate the accuracy score of the model
 from sklearn.metrics import accuracy_score
 
-adult_df = pd.read_csv('prueba.csv',
+adult_df = pd.read_csv('movieLensPrueba.csv',
                        header = None, delimiter=' *, *', engine='python')
 
 adult_df.columns = ['movieid','userid','rating',
@@ -36,28 +36,10 @@ adult_df.columns = ['movieid','userid','rating',
 
 #print(adult_df.isnull().sum())
 
-for value in ['gender','namepar','action','adventure','animation',
-              'childrens','comedy','crime',
-              'documentary','drama','fantasy',
-              'filmnoir','horror','musical',
-              'mystery','romance','scifi',
-              'thriller','war','western']:
-    print (value,":", sum(adult_df[value] == '?'))
-
 
 adult_df_rev = adult_df
 #print(adult_df_rev.describe(include= 'all'))
 
-for value in ['gender','namepar','action','adventure','animation',
-              'childrens','comedy','crime',
-              'documentary','drama','fantasy',
-              'filmnoir','horror','musical',
-              'mystery','romance','scifi',
-              'thriller','war','western']:
-    adult_df_rev[value].replace(['?'], [adult_df_rev.describe(include='all')[value][2]],
-                                inplace='True')
-
-adult_df_rev = adult_df
 
 le = preprocessing.LabelEncoder()
 gender_cat = le.fit_transform(adult_df.gender)
@@ -102,9 +84,7 @@ adult_df_rev['scifi_cat'] = scifi_cat
 adult_df_rev['thriller_cat'] = thriller_cat
 adult_df_rev['war_cat'] = war_cat
 adult_df_rev['western_cat'] = western_cat
-            
-#print(adult_df_rev)
-            
+
 #drop the old categorical columns from dataframe
 dummy_fields = ['gender','namepar','action','adventure','animation',
               'childrens','comedy','crime',
@@ -123,7 +103,9 @@ adult_df_rev = adult_df_rev.reindex_axis(['movieid','userid','rating',
                     'fantasy_cat','filmnoir_cat','horror_cat','musical_cat',
                     'mystery_cat','romance_cat',
                     'scifi_cat','thriller_cat','war_cat','western_cat'], axis= 1)
-print(adult_df_rev)
+
+
+
 num_features = ['movieid','userid','rating',
                     'gender_cat','age','occupation','zipcode',
                     'namewords','namepar_cat','year','action_cat',
@@ -132,17 +114,19 @@ num_features = ['movieid','userid','rating',
                     'fantasy_cat','filmnoir_cat','horror_cat','musical_cat',
                     'mystery_cat','romance_cat',
                     'scifi_cat','thriller_cat','war_cat','western_cat']
-
+'''
 scaled_features = {}
 for each in num_features:
     mean, std = adult_df_rev[each].mean(), adult_df_rev[each].std()
     scaled_features[each] = [mean, std]
     adult_df_rev.loc[:, each] = (adult_df_rev[each] - mean)/std
-            
+
+print(adult_df_rev)
+'''
 features = adult_df_rev.values[:,0:27]
 target = adult_df_rev.values[:,27]
 features_train, features_test, target_train, target_test = train_test_split(features,
-                                                                            target, test_size = 0.33, random_state = 10)
+                                                                            target, test_size = 0.40, random_state = 10)
 
 x_scalar = StandardScaler()
 features_train = x_scalar.fit_transform(features_train)
@@ -152,4 +136,4 @@ clf = GaussianNB()
 clf.fit(features_train, target_train)
 target_pred = clf.predict(features_test)
 
-print(accuracy_score(target_test, target_pred, normalize = True))
+print(accuracy_score(target_test, target_pred, normalize=True))
