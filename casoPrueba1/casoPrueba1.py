@@ -80,5 +80,5 @@ clf = GaussianNB()
 clf.fit(features_train, target_train)
 target_pred = clf.predict(features_test)
 
-
+print(target_pred)
 print(accuracy_score(target_test, target_pred, normalize = True))

@@ -20,7 +20,7 @@ from sklearn.naive_bayes import GaussianNB
 # To calculate the accuracy score of the model
 from sklearn.metrics import accuracy_score
 
-adult_df = pd.read_csv('prueba.csv',
+adult_df = pd.read_csv('movieLensPrueba.csv',
                        header = None, delimiter=' *, *', engine='python')
 
 adult_df.columns = ['movieid','userid','rating',
@@ -35,14 +35,6 @@ adult_df.columns = ['movieid','userid','rating',
 #print(adult_df)
 
 #print(adult_df.isnull().sum())
-
-for value in ['gender','namepar','action','adventure','animation',
-              'childrens','comedy','crime',
-              'documentary','drama','fantasy',
-              'filmnoir','horror','musical',
-              'mystery','romance','scifi',
-              'thriller','war','western']:
-    print (value,":", sum(adult_df[value] == '?'))
 
 
 adult_df_rev = adult_df
@@ -123,21 +115,8 @@ adult_df_rev = adult_df_rev.reindex_axis(['movieid','userid','rating',
                     'fantasy_cat','filmnoir_cat','horror_cat','musical_cat',
                     'mystery_cat','romance_cat',
                     'scifi_cat','thriller_cat','war_cat','western_cat'], axis= 1)
-print(adult_df_rev)
-num_features = ['movieid','userid','rating',
-                    'gender_cat','age','occupation','zipcode',
-                    'namewords','namepar_cat','year','action_cat',
-                    'adventure_cat','animation_cat','childrens_cat',
-                    'comedy_cat','crime_cat','documentary_cat','drama_cat',
-                    'fantasy_cat','filmnoir_cat','horror_cat','musical_cat',
-                    'mystery_cat','romance_cat',
-                    'scifi_cat','thriller_cat','war_cat','western_cat']
+#print(adult_df_rev)
 
-scaled_features = {}
-for each in num_features:
-    mean, std = adult_df_rev[each].mean(), adult_df_rev[each].std()
-    scaled_features[each] = [mean, std]
-    adult_df_rev.loc[:, each] = (adult_df_rev[each] - mean)/std
             
 features = adult_df_rev.values[:,0:27]
 target = adult_df_rev.values[:,27]
@@ -152,4 +131,5 @@ clf = GaussianNB()
 clf.fit(features_train, target_train)
 target_pred = clf.predict(features_test)
 
+print(target_pred)
 print(accuracy_score(target_test, target_pred, normalize = True))
