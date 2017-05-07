@@ -20,6 +20,8 @@ from sklearn.naive_bayes import GaussianNB
 # To calculate the accuracy score of the model
 from sklearn.metrics import accuracy_score
 
+import matplotlib.pyplot as plt
+
 adult_df = pd.read_csv('movieLensPrueba.csv',
                        header = None, delimiter=' *, *', engine='python')
 
@@ -32,14 +34,8 @@ adult_df.columns = ['movieid','userid','rating',
                     'mystery','romance',
                     'scifi','thriller','war','western']
 
-#print(adult_df)
-
-#print(adult_df.isnull().sum())
-
 
 adult_df_rev = adult_df
-#print(adult_df_rev.describe(include= 'all'))
-
 
 le = preprocessing.LabelEncoder()
 gender_cat = le.fit_transform(adult_df.gender)
@@ -114,26 +110,20 @@ num_features = ['movieid','userid','rating',
                     'fantasy_cat','filmnoir_cat','horror_cat','musical_cat',
                     'mystery_cat','romance_cat',
                     'scifi_cat','thriller_cat','war_cat','western_cat']
-'''
-scaled_features = {}
-for each in num_features:
-    mean, std = adult_df_rev[each].mean(), adult_df_rev[each].std()
-    scaled_features[each] = [mean, std]
-    adult_df_rev.loc[:, each] = (adult_df_rev[each] - mean)/std
 
-print(adult_df_rev)
-'''
+
 features = adult_df_rev.values[:,0:27]
 target = adult_df_rev.values[:,27]
 features_train, features_test, target_train, target_test = train_test_split(features,
                                                                             target, test_size = 0.40, random_state = 10)
-
-x_scalar = StandardScaler()
-features_train = x_scalar.fit_transform(features_train)
-features_test = x_scalar.transform(features_test)
 
 clf = GaussianNB()
 clf.fit(features_train, target_train)
 target_pred = clf.predict(features_test)
 
 print(accuracy_score(target_test, target_pred, normalize=True))
+
+
+plt.plot(target_pred)
+plt.ylabel('arriendo o no')
+plt.show()
