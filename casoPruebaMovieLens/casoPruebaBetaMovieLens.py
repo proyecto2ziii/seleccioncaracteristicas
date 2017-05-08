@@ -22,7 +22,7 @@ from sklearn.metrics import accuracy_score
 
 import matplotlib.pyplot as plt
 
-adult_df = pd.read_csv('movieLensPrueba.csv',
+adult_df = pd.read_csv('MLall.csv',
                        header = None, delimiter=' *, *', engine='python')
 
 adult_df.columns = ['movieid','userid','rating',
@@ -122,8 +122,3 @@ clf.fit(features_train, target_train)
 target_pred = clf.predict(features_test)
 
 print(accuracy_score(target_test, target_pred, normalize=True))
-
-
-plt.plot(target_pred)
-plt.ylabel('arriendo o no')
-plt.show()
