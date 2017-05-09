@@ -25,14 +25,14 @@ import matplotlib.pyplot as plt
 adult_df = pd.read_csv('MLall.csv',
                        header = None, delimiter=' *, *', engine='python')
 
-adult_df.columns = ['movieid','userid',
+adult_df.columns = ['movieid','userid','rating',
                     'gender','age','occupation','zipcode',
                     'namewords','namepar','year','action',
                     'adventure','animation','childrens',
                     'comedy','crime','documentary','drama',
                     'fantasy','filmnoir','horror','musical',
                     'mystery','romance',
-                    'scifi','thriller','war','western','rating']
+                    'scifi','thriller','war','western']
 
 
 adult_df_rev = adult_df
@@ -91,38 +91,34 @@ dummy_fields = ['gender','namepar','action','adventure','animation',
 adult_df_rev = adult_df_rev.drop(dummy_fields, axis = 1)
 
 #print(adult_df_rev)
-adult_df_rev = adult_df_rev.reindex_axis(['movieid','userid',
+adult_df_rev = adult_df_rev.reindex_axis(['movieid','userid','rating',
                     'gender_cat','age','occupation','zipcode',
                     'namewords','namepar_cat','year','action_cat',
                     'adventure_cat','animation_cat','childrens_cat',
                     'comedy_cat','crime_cat','documentary_cat','drama_cat',
                     'fantasy_cat','filmnoir_cat','horror_cat','musical_cat',
                     'mystery_cat','romance_cat',
-                    'scifi_cat','thriller_cat','war_cat','western_cat','rating'], axis= 1)
+                    'scifi_cat','thriller_cat','war_cat','western_cat'], axis= 1)
 
 
 
-num_features = ['movieid','userid',
+num_features = ['movieid','userid','rating',
                     'gender_cat','age','occupation','zipcode',
                     'namewords','namepar_cat','year','action_cat',
                     'adventure_cat','animation_cat','childrens_cat',
                     'comedy_cat','crime_cat','documentary_cat','drama_cat',
                     'fantasy_cat','filmnoir_cat','horror_cat','musical_cat',
                     'mystery_cat','romance_cat',
-                    'scifi_cat','thriller_cat','war_cat','western_cat','rating']
+                    'scifi_cat','thriller_cat','war_cat','western_cat']
 
 
 features = adult_df_rev.values[:,0:27]
 target = adult_df_rev.values[:,27]
 features_train, features_test, target_train, target_test = train_test_split(features,
-                                                                            target, test_size = 0.60, random_state = 10)
+                                                                            target, test_size = 0.25, random_state = 10)
 
 clf = GaussianNB()
 clf.fit(features_train, target_train)
 target_pred = clf.predict(features_test)
 
-print(accuracy_score(target_test, target_pred, normalize=False))
-print(target_pred)
-plt.plot(target_pred)
-plt.ylabel('Ratings')
-plt.show()
+print(accuracy_score(target_test, target_pred, normalize=True))
