@@ -25,9 +25,9 @@ import matplotlib.pyplot as plt
 adult_df = pd.read_csv('BCall.csv',
                        header = None, delimiter=' *, *', engine='python')
 
-adult_df.columns = ['userid','bookid','rating',
+adult_df.columns = ['userid','bookid',
 					'titlewords','authorwords',
-					'year','publisher','country','age']
+					'year','publisher','country','age','rating']
 
 
 adult_df_rev = adult_df
@@ -42,13 +42,13 @@ adult_df_rev['country_cat'] = country_cat
 dummy_fields = ['country']
 adult_df_rev = adult_df_rev.drop(dummy_fields, axis = 1)
 
-adult_df_rev = adult_df_rev.reindex_axis(['userid','bookid','rating',
+adult_df_rev = adult_df_rev.reindex_axis(['userid','bookid',
 						'titlewords','authorwords',
-						'year','publisher','country_cat','age'], axis= 1)
+						'year','publisher','country_cat','age','rating'], axis= 1)
 
-num_features = ['userid','bookid','rating',
+num_features = ['userid','bookid',
 				'titlewords','authorwords',
-				'year','publisher','country_cat','age']
+				'year','publisher','country_cat','age','rating']
 
 features = adult_df_rev.values[:,0:8]
 target = adult_df_rev.values[:,8]

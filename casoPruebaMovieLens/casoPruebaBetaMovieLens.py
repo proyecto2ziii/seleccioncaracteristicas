@@ -115,7 +115,7 @@ num_features = ['movieid','userid',
 features = adult_df_rev.values[:,0:27]
 target = adult_df_rev.values[:,27]
 features_train, features_test, target_train, target_test = train_test_split(features,
-                                                                            target, test_size = 0.40, random_state = 10)
+                                                                            target, test_size = 0.60, random_state = 10)
 
 clf = GaussianNB()
 clf.fit(features_train, target_train)
